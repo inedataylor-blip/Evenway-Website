@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evenway Design | Modern Web Design for Local Business</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #162a3e;
+    --paper: #f5f7f9;
+    --accent: #162a3e;
+    --accent-light: #6e8fa3;
+    --steel: #8daab8;
+    --steel-light: #b0c8d4;
+    --muted: #7a8b96;
+    --card-bg: #e9eef2;
+    --white: #ffffff;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 4vw;
+    background: rgba(245, 247, 249, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(22, 42, 62, 0.06);
+    transition: padding 0.3s;
+  }
+  nav.scrolled { padding: 0.6rem 4vw; }
+  .nav-logo img {
+    height: 38px;
+    width: auto;
+    transition: height 0.3s;
+  }
+  nav.scrolled .nav-logo img { height: 30px; }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--ink) !important;
+    color: var(--paper) !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 6px;
+    font-size: 0.85rem !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--steel) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4vw 4rem;
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(141, 170, 184, 0.06) 50%, rgba(22, 42, 62, 0.04) 100%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--steel);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 28px; height: 2px;
+    background: var(--steel);
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.15s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--steel);
+  }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.3s forwards;
+  }
+  .hero-actions {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.45s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--ink);
+    color: var(--white);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--steel); transform: translateY(-1px); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    color: var(--ink);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid rgba(22,42,62,0.2);
+    transition: border-color 0.2s;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: var(--ink); }
+
+  /* FLOATING STATS */
+  .hero-stats {
+    position: absolute;
+    right: 4vw;
+    bottom: 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.6s forwards;
+  }
+  .hero-stat { text-align: right; }
+  .hero-stat-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* SECTIONS */
+  section { padding: 6rem 4vw; }
+  .section-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--steel);
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 600px;
+  }
+  .section-divider {
+    width: 50px; height: 2px;
+    background: var(--steel);
+    margin: 1rem 0 2rem;
+  }
+
+  /* SERVICES */
+  .services-section {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .services-section .section-title { color: var(--paper); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .service-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 2.2rem;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .service-card:hover {
+    border-color: var(--steel);
+    transform: translateY(-3px);
+  }
+  .service-icon {
+    width: 44px; height: 44px;
+    background: var(--steel);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+  .service-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .service-card p {
+    font-size: 0.92rem;
+    color: rgba(245,247,249,0.6);
+    line-height: 1.65;
+  }
+  .service-price {
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--steel-light);
+  }
+
+  /* PORTFOLIO */
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .portfolio-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 16/10;
+    background: var(--card-bg);
+    border: 1px solid rgba(22,42,62,0.06);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .portfolio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(22,42,62,0.12);
+  }
+  .portfolio-mockup {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .mockup-chrome {
+    background: #dde3e8;
+    padding: 0.5rem 0.8rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .chrome-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .chrome-dot:nth-child(1) { background: #e86e5a; }
+  .chrome-dot:nth-child(2) { background: #e8c95a; }
+  .chrome-dot:nth-child(3) { background: #6ec95a; }
+  .chrome-url {
+    margin-left: 0.6rem;
+    background: rgba(22,42,62,0.06);
+    border-radius: 4px;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.65rem;
+    color: var(--muted);
+    flex: 1;
+  }
+  .mockup-body { flex: 1; position: relative; overflow: hidden; }
+
+  /* ── Contractor mockup ── */
+  .mock-contractor {
+    background: linear-gradient(135deg, #1b2838 0%, #2d3e50 100%);
+    height: 100%; padding: 1.5rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .mock-contractor .mc-badge {
+    font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: #d4a853; margin-bottom: 0.5rem; font-weight: 600;
+  }
+  .mock-contractor h4 {
+    font-family: var(--font-display);
+    color: #fff; font-size: 1.25rem; line-height: 1.2; margin-bottom: 0.4rem;
+  }
+  .mock-contractor p { color: rgba(255,255,255,0.5); font-size: 0.65rem; max-width: 200px; }
+  .mock-contractor .mc-btn {
+    margin-top: 0.75rem;
+    display: inline-block;
+    background: #d4a853; color: #1b2838;
+    padding: 0.3rem 0.9rem; border-radius: 4px;
+    font-size: 0.6rem; font-weight: 700; width: fit-content;
+  }
+  .mock-contractor .mc-grid {
+    position: absolute; right: 1rem; bottom: 1rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;
+  }
+  .mc-grid-item {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 0.4rem 0.5rem; text-align: center;
+  }
+  .mc-grid-item span { display: block; color: #d4a853; font-size: 0.9rem; font-weight: 700; }
+  .mc-grid-item small { color: rgba(255,255,255,0.4); font-size: 0.5rem; }
+
+  /* ── Auto repair mockup ── */
+  .mock-auto {
+    background: linear-gradient(160deg, #111 0%, #1a1a1a 100%);
+    height: 100%; padding: 1.5rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .mock-auto .ma-accent { color: #e63946; font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 0.4rem; }
+  .mock-auto h4 { color: #fff; font-family: var(--font-body); font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mock-auto p { color: rgba(255,255,255,0.4); font-size: 0.6rem; margin-top: 0.3rem; }
+  .mock-auto .ma-services { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .ma-tag {
+    background: rgba(230,57,70,0.15); border: 1px solid rgba(230,57,70,0.3);
+    color: #e63946; font-size: 0.55rem; padding: 0.25rem 0.6rem;
+    border-radius: 20px; font-weight: 600;
+  }
+  .mock-auto .ma-cta {
+    margin-top: 0.9rem; background: #e63946; color: #fff;
+    padding: 0.3rem 0.9rem; border-radius: 4px;
+    font-size: 0.6rem; font-weight: 700; width: fit-content;
+  }
+
+  /* ── Chiropractor mockup ── */
+  .mock-chiro {
+    background: linear-gradient(145deg, #f0f5f0 0%, #dce8dc 100%);
+    height: 100%; padding: 1.5rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .mock-chiro .mch-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .mock-chiro h4 {
+    font-family: var(--font-display); color: #2d4a3e;
+    font-size: 1.15rem; line-height: 1.2;
+  }
+  .mock-chiro p { color: #5a7a6a; font-size: 0.6rem; margin-top: 0.3rem; max-width: 220px; }
+  .mock-chiro .mch-cards { display: flex; gap: 0.4rem; margin-top: 0.9rem; }
+  .mch-card-item {
+    background: rgba(255,255,255,0.7); border-radius: 8px;
+    padding: 0.5rem; text-align: center; flex: 1;
+    backdrop-filter: blur(4px);
+  }
+  .mch-card-item span { display: block; font-size: 0.9rem; }
+  .mch-card-item small { color: #5a7a6a; font-size: 0.5rem; font-weight: 600; }
+  .mock-chiro .mch-btn {
+    margin-top: 0.75rem; background: #2d4a3e; color: #f0f5f0;
+    padding: 0.3rem 0.9rem; border-radius: 4px;
+    font-size: 0.6rem; font-weight: 700; width: fit-content;
+  }
+
+  .portfolio-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(transparent, rgba(22,42,62,0.85));
+    transform: translateY(100%);
+    transition: transform 0.3s;
+  }
+  .portfolio-card:hover .portfolio-overlay { transform: translateY(0); }
+  .portfolio-overlay h3 {
+    font-family: var(--font-display);
+    color: var(--white); font-size: 1.1rem;
+  }
+  .portfolio-overlay p {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.8rem; margin-top: 0.2rem;
+  }
+
+  /* PROCESS */
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .process-step {
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--card-bg);
+    transition: border-color 0.3s;
+  }
+  .process-step:hover { border-color: var(--steel); }
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem; font-weight: 600;
+    color: var(--card-bg); line-height: 1;
+    transition: color 0.3s;
+  }
+  .process-step:hover .step-num { color: var(--steel); }
+  .process-step h3 { font-size: 1.05rem; font-weight: 700; margin: 0.4rem 0 0.3rem; }
+  .process-step p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* TESTIMONIALS */
+  .testimonials-section { background: var(--card-bg); }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .testimonial-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+  }
+  .testimonial-card p {
+    font-size: 0.95rem; color: var(--ink);
+    line-height: 1.7; font-style: italic;
+  }
+  .testimonial-author {
+    margin-top: 1.2rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .testimonial-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white); font-weight: 700; font-size: 0.85rem;
+  }
+  .testimonial-name { font-weight: 700; font-size: 0.9rem; }
+  .testimonial-role { font-size: 0.78rem; color: var(--muted); }
+
+  /* CTA */
+  .cta-section {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    padding: 6rem 4vw;
+  }
+  .cta-section .section-title {
+    color: var(--paper);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .cta-section .section-label { margin-bottom: 0.75rem; }
+  .cta-sub {
+    color: rgba(245,247,249,0.5);
+    max-width: 450px;
+    margin: 1rem auto 2rem;
+    font-size: 1rem;
+  }
+  .cta-section .btn-primary {
+    background: var(--steel);
+    font-size: 1.05rem;
+    padding: 1rem 2.5rem;
+  }
+  .cta-section .btn-primary:hover { background: var(--steel-light); }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 4vw;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+    border-top: 1px solid rgba(22,42,62,0.08);
+  }
+  .footer-logo img {
+    height: 28px;
+    width: auto;
+    opacity: 0.7;
+  }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a {
+    font-size: 0.85rem; color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--ink); }
+  .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 5vw; }
+    .nav-links { display: none; }
+    .hero { padding: 7rem 5vw 4rem; }
+    .hero-stats { display: none; }
+    section { padding: 4rem 5vw; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .portfolio-overlay { transform: translateY(0); }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo"><img src="evenway-logo.png" alt="Evenway Design"></a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#contact" class="nav-cta">Get a Free Mockup</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Modern Web Design Studio</div>
+  <h1>Your business deserves a website that <em>actually works</em></h1>
+  <p class="hero-sub">We redesign outdated websites into modern, mobile-first experiences that turn visitors into customers. Fixed pricing. Fast turnaround. No surprises.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Get a Free Mockup →</a>
+    <a href="#work" class="btn-secondary">See Our Work</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">7</div>
+      <div class="hero-stat-label">Day avg. turnaround</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-label">Satisfaction guaranteed</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="section-label">What We Do</div>
+  <h2 class="section-title">Three ways to transform your online presence</h2>
+  <div class="section-divider" style="background: var(--steel-light);"></div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">⚡</div>
+      <h3>Quick Refresh</h3>
+      <p>A visual overhaul of your existing site. Updated colors, modern typography, mobile responsiveness, and polished layouts. Same content, completely new feel.</p>
+      <div class="service-price">Starting at $500</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🏗</div>
+      <h3>Full Redesign</h3>
+      <p>Ground-up rebuild with 3–7 custom pages, strategic layout, SEO fundamentals, contact forms, and a design that positions you ahead of competitors.</p>
+      <div class="service-price">Starting at $1,200</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔄</div>
+      <h3>Redesign + Retainer</h3>
+      <p>Everything in the full redesign, plus ongoing monthly support: content updates, performance monitoring, and design tweaks whenever you need them.</p>
+      <div class="service-price">Starting at $1,500 + $150/mo</div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="work">
+  <div class="section-label">Design Studies</div>
+  <h2 class="section-title">Concept redesigns for local businesses</h2>
+  <div class="section-divider"></div>
+  <p style="color: var(--muted); font-size: 0.95rem; max-width: 550px; margin-bottom: 2rem; line-height: 1.7;">These are full concept redesigns we built to demonstrate our approach. Each one shows how a modern, mobile-first site transforms a business's online presence.</p>
+  <div class="portfolio-grid">
+
+    <!-- Contractor Card -->
+    <div class="portfolio-card reveal">
+      <div class="portfolio-mockup">
+        <div class="mockup-chrome">
+          <div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div>
+          <div class="chrome-url">www.sierracrestbuilders.com</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mock-contractor">
+            <div class="mc-badge">Licensed • Bonded • Insured</div>
+            <h4>Build Your Dream Home</h4>
+            <p>Premier kitchen & bath remodeling in the Treasure Valley</p>
+            <div class="mc-btn">GET FREE ESTIMATE</div>
+            <div class="mc-grid">
+              <div class="mc-grid-item"><span>200+</span><small>Projects</small></div>
+              <div class="mc-grid-item"><span>15yr</span><small>Experience</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-overlay">
+        <h3>Sierra Crest Builders</h3>
+        <p>Home Remodeling · Concept Redesign</p>
+      </div>
+    </div>
+
+    <!-- Auto Repair Card -->
+    <div class="portfolio-card reveal">
+      <div class="portfolio-mockup">
+        <div class="mockup-chrome">
+          <div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div>
+          <div class="chrome-url">www.ironworksautoaz.com</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mock-auto">
+            <div class="ma-accent">⚙ Trusted Since 2008</div>
+            <h4>IRONWORKS AUTO</h4>
+            <p>Honest repairs. Fair prices. Scottsdale, AZ.</p>
+            <div class="ma-services">
+              <span class="ma-tag">Brakes</span>
+              <span class="ma-tag">Engine</span>
+              <span class="ma-tag">A/C</span>
+              <span class="ma-tag">Diagnostics</span>
+            </div>
+            <div class="ma-cta">BOOK APPOINTMENT</div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-overlay">
+        <h3>Ironworks Auto</h3>
+        <p>Auto Repair · Concept Redesign</p>
+      </div>
+    </div>
+
+    <!-- Chiropractor Card -->
+    <div class="portfolio-card reveal">
+      <div class="portfolio-mockup">
+        <div class="mockup-chrome">
+          <div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div>
+          <div class="chrome-url">www.alignwellnessaz.com</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mock-chiro">
+            <div class="mch-icon">🌿</div>
+            <h4>Whole-Body Wellness Starts Here</h4>
+            <p>Chiropractic care, sports rehab & recovery in North Phoenix</p>
+            <div class="mch-cards">
+              <div class="mch-card-item"><span>🦴</span><small>Adjustments</small></div>
+              <div class="mch-card-item"><span>💆</span><small>Massage</small></div>
+              <div class="mch-card-item"><span>🏋️</span><small>Rehab</small></div>
+            </div>
+            <div class="mch-btn">SCHEDULE VISIT</div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-overlay">
+        <h3>Align Wellness</h3>
+        <p>Chiropractic Clinic · Concept Redesign</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" style="background: var(--card-bg);">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">From first call to launch in four simple steps</h2>
+  <div class="section-divider"></div>
+  <div class="process-grid">
+    <div class="process-step reveal">
+      <div class="step-num">01</div>
+      <h3>Discovery Call</h3>
+      <p>We spend 20 minutes learning about your business, your customers, and what you need your website to do. No pressure, no jargon.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">02</div>
+      <h3>Free Mockup</h3>
+      <p>Before you spend a dollar, we'll build a preview of your redesigned homepage so you can see exactly what you're getting.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">03</div>
+      <h3>Build & Refine</h3>
+      <p>Once approved, we build the full site with one round of revisions included. Most projects are done in under a week.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">04</div>
+      <h3>Launch</h3>
+      <p>We deploy your new site, make sure everything works perfectly on every device, and hand you the keys. You own everything.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY EVENWAY -->
+<section class="testimonials-section">
+  <div class="section-label">Why Evenway</div>
+  <h2 class="section-title">What makes us different</h2>
+  <div class="section-divider"></div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <p style="font-style: normal; font-size: 1.5rem; font-family: var(--font-display); color: var(--ink); line-height: 1.3; margin-bottom: 0.5rem;">Fixed pricing, no surprises.</p>
+      <p style="font-style: normal; color: var(--muted); font-size: 0.92rem;">You'll know exactly what you're paying before we start. No hourly billing, no scope creep charges, no invoices that mysteriously grow. One price, one project, done.</p>
+    </div>
+    <div class="testimonial-card reveal">
+      <p style="font-style: normal; font-size: 1.5rem; font-family: var(--font-display); color: var(--ink); line-height: 1.3; margin-bottom: 0.5rem;">Your site in 7 days, not 7 weeks.</p>
+      <p style="font-style: normal; color: var(--muted); font-size: 0.92rem;">Most redesigns are delivered in under a week. We move fast because our process is refined, not because we cut corners. You'll see a draft before you spend a dollar.</p>
+    </div>
+    <div class="testimonial-card reveal">
+      <p style="font-style: normal; font-size: 1.5rem; font-family: var(--font-display); color: var(--ink); line-height: 1.3; margin-bottom: 0.5rem;">You own everything.</p>
+      <p style="font-style: normal; color: var(--muted); font-size: 0.92rem;">No lock-in contracts, no proprietary builders, no monthly hostage fees. When we hand over your site, it's yours: the code, the design, the domain. Walk away anytime.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="section-label">Let's Talk</div>
+  <h2 class="section-title">Ready for a website you're proud of?</h2>
+  <p class="cta-sub">Send us your current site URL and we'll send back a free mockup of what your redesign could look like. No commitment, no catch.</p>
+  <a href="mailto:hello@evenwaydesign.com" class="btn-primary" style="display: inline-flex;">Send Us Your Site →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><img src="evenway-logo.png" alt="Evenway Design"></div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="mailto:hello@evenwaydesign.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Evenway Design. Based in Boise, ID • Serving clients nationwide.</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
